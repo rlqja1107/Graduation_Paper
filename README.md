@@ -15,8 +15,8 @@ Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 �
 
 * Librarything  
 [Click](https://cseweb.ucsd.edu/~jmcauley/datasets.html#social_data)  
-* Epinion Review 
-[Click](https://cseweb.ucsd.edu/~jmcauley/datasets.html#social_data)  
-* Yelp-2018  
-[Click](https://www.kaggle.com/yelp-dataset/yelp-dataset)  
+* Epinion Review   
+[Click](https://cseweb.ucsd.edu/~jmcauley/datasets.html#social_data)   
+* Yelp-2018   
+[Click](https://www.kaggle.com/yelp-dataset/yelp-dataset)   
 
