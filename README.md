@@ -20,3 +20,6 @@ Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 �
 * Yelp-2018   
 [Click](https://www.kaggle.com/yelp-dataset/yelp-dataset)   
 
+#### Dataset의 기본적인 설명보기   
+[Click](https://github.com/rlqja1107/Graduation_Paper/wiki/Data-Explanation)
+
