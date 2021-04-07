@@ -25,3 +25,5 @@ Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja
 #### Dataset의 기본적인 설명보기   
 [Click](https://github.com/rlqja1107/Graduation_Paper/wiki/Data-Explanation)
 
+<h2 style="color: royalblue; font-weight: bold">이전모델의 성능비교</h2>  
+
