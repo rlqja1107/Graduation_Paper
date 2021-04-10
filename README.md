@@ -9,7 +9,7 @@ Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 �
 <h2 style="color: royalblue; font-weight: bold">Target Paper</h2>  
 
 * [A Heterogeneous Graph Neural Model for Cold-start Recommendation](https://dl.acm.org/doi/abs/10.1145/3397271.3401252)  
-
+* [Neural Graph Collaborative Filtering](https://arxiv.org/pdf/1905.08108.pdf)  
 
 <h2 style="color: royalblue; font-weight: bold">데이터셋</h2>  
 
@@ -24,4 +24,6 @@ Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja
 
 #### Dataset의 기본적인 설명보기   
 [Click](https://github.com/rlqja1107/Graduation_Paper/wiki/Data-Explanation)
+
+<h2 style="color: royalblue; font-weight: bold">이전모델의 성능비교</h2>  
 
