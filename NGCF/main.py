@@ -18,7 +18,8 @@ if __name__ == '__main__':
     'n_embedding' : 64,
     'topk' : 10,
     'regularization' : 0.005,
-    'lr' : 0.01
+    'lr' : 0.0005,
+    'epoch' : 2000
     }
     train_data = DataTrain(config)
     train_data.load_data()
@@ -29,8 +30,8 @@ if __name__ == '__main__':
     optim = torch.optim.Adam(model.parameters(), lr = config['lr'])
     sparse_eye = sp.eye(train_data.n_user+train_data.n_item, dtype = np.float)
     sparse_eye = sparse_mx_to_torch_sparse_tensor(sparse_eye).cuda()
-
-    for e in range(150):
+    max_val = {'hit':0.0, 'ndcg': 0.0, 'h_epoch':0, 'ndcg_epoch':0}
+    for e in range(config['epoch']):
         train_data.make_batch_sampling()
         dataloader = DataLoader(train_data, batch_size=config['batch_size'], shuffle=True)
         total_loss = 0.0
@@ -55,6 +56,11 @@ if __name__ == '__main__':
             print("Epoch : {:d}, Loss : {:4f}, Time : {:4f}".format(e, total_loss, timer()-start))
         test_timer = timer()
         hit, ndcg = test(model, train_data, test_dataloader, sparse_eye)
+        if max_val['hit']<hit:
+            max_val['hit'] = hit
+            max_val['h_epoch'] = e
+        if max_val['ndcg']<ndcg:
+            max_val['ndcg'] = ndcg
+            max_val['ndcg_epoch'] = e
         if e % 10 == 0:
-            print("Epoch : {:d}, Hit@{:d} : {:4f},NDCG@{:d} : {:4f} Time : {:4f}".format(e, config['topk'],hit, config['topk'], ndcg,timer()-test_timer))
-            
+            print("Epoch : {:d}, Hit@{:d} : {:4f},NDCG@{:d} : {:4f} MAX HIT :{:4f},MAX NDCG : {:4f}, Max at epoch : {:d} ,Time : {:4f}".format(e, config['topk'],hit, config['topk'], ndcg,max_val['hit'],max_val['ndcg'],max_val['h_epoch'],timer()-test_timer))

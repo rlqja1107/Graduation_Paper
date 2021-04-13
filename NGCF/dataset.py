@@ -67,13 +67,25 @@ class DataTrain(Dataset):
                     self.n_item = max(self.n_item, max(items))
                     self.n_user = max(self.n_user, uid)
                     self.n_train += len(items)
-        
+        self.S = sp.dok_matrix((self.n_user, self.n_user), dtype=np.float32)
+        with open(self.path+'/social_relations_modified.txt') as f:
+            for l in f.readlines():
+                l = l.strip('\n').split(' ')
+                uid = int(l[0])
+                for item in l[1:]:
+                    self.S[uid, int(item)] = self.S[int(item), uid] =1.0
+
+        self.C = sp.dok_matrix((self.n_item, self.n_item), dtype=np.float32)
+        with open(self.path+'/review_index.txt') as f:
+            for l in f.readlines():
+                l = l.strip('\n').split(',')
+                iid = int(l[0])
+                for item in l[1:]:
+                    self.C[iid, int(item)] = self.C[int(item), iid] = 1.0
         self.n_user += 1
         self.n_item += 1
         self.R.resize((self.n_user, self.n_item))
 
-        self.Item_By_Item = sp.dok_matrix((self.n_item, self.n_item), dtype = np.float32)
-        self.User_By_User = sp.dok_matrix((self.n_user, self.n_user), dtype = np.float32)
         self.H = sp.dok_matrix((self.n_user+self.n_item, self.n_user+self.n_item), dtype = np.float32)
         self.normalize_H()
                
@@ -83,8 +95,8 @@ class DataTrain(Dataset):
         self.H[:self.n_user, self.n_user:] = self.R
         self.H[self.n_user:, :self.n_user] = self.R.T
         # item과 user matrix를 넣으면 됨.
-        # self.H[:self.n_user, :self.n_user] = User Matrix
-        # self.H[self.n_user:, self.n_user:] = Item Matrix
+        # self.H[:self.n_user, :self.n_user] = self.S
+        # self.H[self.n_user:, self.n_user:] = self.C
         self.H = self.H.todok()
 
         # Normalize 
