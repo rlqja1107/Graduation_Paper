@@ -22,6 +22,25 @@ Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 �
 
 Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja1107/Graduation_Paper/blob/main/Yelp/README.md)를 참조  
 
+<h3 style="color: red; font-weight: bold">Epinion</h3>   
+
+|Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
+|:---:|:---:|:---:|:---:|:---:|:---:|      
+|BPR|0.00046|0.001234||0.00606|0.00672|    
+|NeuMF|0.045|0.0976||0.00841|0.00739|  
+|NGCF|0.003655|0.006970||0.00850|0.00955|   
+|HGNR|0.0.003231|0.001430||0.00945|0.00955|   
+
+* HGNR: Learing Rate : 0.00005, Regularization : 0.005, Epoch : 1000(360에서 최대)
+
+<h3 style="color: red; font-weight: bold">Librarything</h3>   
+
+|Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
+|:---:|:---:|:---:|:---:|:---:|:---:|      
+|BPR||||||    
+|NGCF|0.003045|0.002100||0.0801|0.0977|  
+|HGNR||||||  
+
 #### Dataset의 기본적인 설명보기   
 [Click](https://github.com/rlqja1107/Graduation_Paper/wiki/Data-Explanation)
 
