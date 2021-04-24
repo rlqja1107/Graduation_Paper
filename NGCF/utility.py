@@ -25,19 +25,20 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     return torch.sparse.FloatTensor(indices, values, shape)
 
 
-def test(model, train_module, test_dataloader,eye):
+def test(model, train_module, test_dataloader):
     model.eval()
     test_dataset = test_dataloader.dataset
 
     with torch.no_grad():
-        user_embedding, item_embedding = model(train_module.L_c, eye)
+        user_embedding, item_embedding = model(train_module.L_c)
     total_hit_rate = []
     total_ndcg = []
-    for _, batch_test in enumerate(test_dataloader):
+    for index, batch_test in enumerate(test_dataloader):
         user_batch = batch_test.cuda()
         user_embed = user_embedding[user_batch]
         item_embed = item_embedding[torch.arange(0, train_module.n_item, dtype = torch.long).cuda()]
         rate_batch = torch.matmul(user_embed, torch.transpose(item_embed, 0, 1))
+        # rate_batch = rate_batch.detach().cpu().numpy()
         # Train에 나왔던 item은 뽑히지 않게
         make_pos_minus(user_batch, rate_batch, train_module.train_items)
 
@@ -46,12 +47,10 @@ def test(model, train_module, test_dataloader,eye):
         
         for i, user in enumerate(user_batch):
             hit, ndcg = test_one_user(user.item(), topk_item[i], test_dataset)
-            total_hit_rate += hit
+            total_hit_rate.append(hit)
             total_ndcg.append(ndcg)
-        # user_batch_rating = zip(topk_item, user_batch)
-        # result = pool.map(test_one_user, user_batch_rating)
-        length = float(test_dataset.n_test)
-    return np.sum(total_hit_rate)/length, np.sum(total_ndcg)/model.n_user
+
+    return np.sum(total_hit_rate)/model.n_user, np.sum(total_ndcg)/model.n_user
 
 
 
@@ -65,16 +64,16 @@ def test_one_user(user, topk_item, test_dataset):
     # hit rate
     pos_test_items = test_dataset.test_items[user]
     hit_list = []
-    for pos in pos_test_items:
-        if pos in topk_item:
+    for pos in topk_item:
+        if pos in pos_test_items:
             hit_list.append(1)
         else:
             hit_list.append(0)
+    hit_rate = 1 if np.sum(hit_list) > 0 else 0
     # NDCG
-    reverse_list = np.asfarray(sorted(hit_list, reverse=True))
+    reverse_list = np.ones(len(hit_list))
     IDCG = np.sum(reverse_list / np.log2(np.arange(2, len(reverse_list)+2)))
     DCG = np.sum(hit_list / np.log2(np.arange(2, len(hit_list)+2)))
     NDCG = 0.0 if DCG == 0.0 else DCG/IDCG
         
-
-    return hit_list, NDCG
+    return hit_rate, NDCG

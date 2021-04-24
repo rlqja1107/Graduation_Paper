@@ -3,7 +3,7 @@ import torch
 import numpy as np
 
 class NGCF(nn.Module):
-    def __init__(self, n_user, n_item, n_embedding):
+    def __init__(self, n_user, n_item, n_embedding, dropout):
         super(NGCF, self).__init__()
         self.n_user = n_user
         self.n_item = n_item
@@ -16,18 +16,18 @@ class NGCF(nn.Module):
         self.Back_Linear_List = nn.ModuleList()
         self.dropout_list = nn.ModuleList()
         for _ in range(3):
-            self.Front_Linear_List.append(nn.Linear(64,64))
-            self.Back_Linear_List.append(nn.Linear(64,64))
-            self.dropout_list.append(nn.Dropout(p=0.5))
+            self.Front_Linear_List.append(nn.Linear(n_embedding, n_embedding))
+            self.Back_Linear_List.append(nn.Linear(n_embedding, n_embedding))
+            self.dropout_list.append(nn.Dropout(p=dropout))
 
-    def forward(self, H, sparse_eye):
+    def forward(self, H):
         E_l_embedding = torch.cat((self.user_embedding.weight, self.item_embedding.weight), dim = 0)
         all_embedding = [E_l_embedding]
-        H_I = H+sparse_eye
+        H_I = H
         for i in range(3):
             Front = torch.sparse.mm(H_I, E_l_embedding)
-            Front_cal = nn.functional.leaky_relu(self.Front_Linear_List[i](Front))
-            Back = torch.mul(E_l_embedding, Front)
+            Front_cal = nn.functional.leaky_relu(self.Front_Linear_List[i](Front)+ self.Front_Linear_List[i](E_l_embedding))
+            Back = torch.mul(Front, E_l_embedding)
             Back = nn.functional.leaky_relu(self.Back_Linear_List[i](Back))
             E_l_embedding = Front_cal + Back
             E_l_embedding = self.dropout_list[i](E_l_embedding)
