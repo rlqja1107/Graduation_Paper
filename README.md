@@ -31,7 +31,7 @@ Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja
 |NGCF|0.001058|0.009185||0.00850|0.00955|   
 |HGNR|0.0.003231|0.001430||0.00945|0.01075|   
 
-* HGNR: Learing Rate : 0.00005, Regularization : 0.005, Epoch : 1000(360에서 최대)
+* NGCF: Learing Rate : 0.0001, Regularization : 0.00001, Epoch : 1500(360에서 최대)
 
 <h3 style="color: red; font-weight: bold">Librarything</h3>   
 
