@@ -27,9 +27,9 @@ Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja
 |Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
 |:---:|:---:|:---:|:---:|:---:|:---:|      
 |BPR|0.00046|0.001234||0.00606|0.00672|    
-|NeuMF||||0.00841|0.00739|  
+|NeuMF||||0.00739|0.00841|  
 |NGCF|0.001058|0.009185||0.00850|0.00955|   
-|HGNR|0.0.003231|0.001430||0.00945|0.00955|   
+|HGNR|0.0.003231|0.001430||0.00945|0.01075|   
 
 * HGNR: Learing Rate : 0.00005, Regularization : 0.005, Epoch : 1000(360에서 최대)
 
@@ -41,9 +41,11 @@ Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja
 |NGCF|0.012698|0.0936||0.0801|0.0977|  
 |HGNR||||||   
 
-> NDCG를 구하는데 있어, 기존의 논문 방식에서는 IDCG를 구할 때, 모두 1로 놓치 않았지만, 더 정확한 비교를 위해 IDCG부분을 모두 1로 셋팅하여 더 Normalize한 방식을 .
+> NDCG를 구하는 방법의 차이 
 
-#### Dataset의 기본적인 설명보기   
+Target 논문에서는 NDCG에서 IDCG를 구할 때, hit list가 [0,1,0,0,....1]이라 할때 [1,1,0,...0]을 통해 구한다. 하지만 이 방법으로는 정확한 비교가 불가능하다고 판단했다. 따라서 NDCG에서 IDCG를 구하는데 있어, [1,1,0,...0]이 아니라 [1,1,1,....1]로 놓고 IDCG를 구하여 NDCG를 구했다. 따라서, 기존 논문보다 당연히 더 NDCG가 작아질 수 밖에 없다.  
+
+### Dataset의 기본적인 설명보기   
 [Click](https://github.com/rlqja1107/Graduation_Paper/wiki/Data-Explanation)  
 
 <h2 style="color: royalblue; font-weight: bold">이전모델의 성능비교</h2>  
