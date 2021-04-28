@@ -41,7 +41,7 @@ Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja
 |NGCF|0.012698|0.0936||0.0801|0.0977|  
 |HGNR||||||   
 
-* NDCG를 구하는데 있어, 기존의 논문 방식에서는 IDCG를 구할 때, 모두 1로 놓치 않았지만, 더 정확한 비교를 위해 IDCG부분을 모두 1로 셋팅하여 더 Normalize한 방식을 .
+> NDCG를 구하는데 있어, 기존의 논문 방식에서는 IDCG를 구할 때, 모두 1로 놓치 않았지만, 더 정확한 비교를 위해 IDCG부분을 모두 1로 셋팅하여 더 Normalize한 방식을 .
 
 #### Dataset의 기본적인 설명보기   
 [Click](https://github.com/rlqja1107/Graduation_Paper/wiki/Data-Explanation)  
