@@ -38,12 +38,12 @@ def test(model, train_module, test_dataloader):
         user_embed = user_embedding[user_batch]
         item_embed = item_embedding[torch.arange(0, train_module.n_item, dtype = torch.long).cuda()]
         rate_batch = torch.matmul(user_embed, torch.transpose(item_embed, 0, 1))
-        # rate_batch = rate_batch.detach().cpu().numpy()
+        rate_batch = rate_batch.detach()
         # Train에 나왔던 item은 뽑히지 않게
         make_pos_minus(user_batch, rate_batch, train_module.train_items)
 
         topk_item = torch.topk(rate_batch, k=train_module.topk, dim=1).indices
-        topk_item = topk_item.detach().cpu().numpy()
+        topk_item = topk_item.cpu().numpy()
         
         for i, user in enumerate(user_batch):
             hit, ndcg = test_one_user(user.item(), topk_item[i], test_dataset)

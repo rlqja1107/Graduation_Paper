@@ -29,9 +29,7 @@ class DataTest(Dataset):
                 items = [int(i) for i in l.split(' ')]
                 self.n_test += len(items[1:])
                 self.test_items[items[0]] = items[1:]
-                n_item = max(n_item, max(items))
         self.test_users = torch.LongTensor(list(self.test_items.keys()))
-        return n_item
 
 
 class DataTrain(Dataset):
@@ -57,41 +55,52 @@ class DataTrain(Dataset):
         return self.exist_users[index], self.pos_item[index], self.neg_item[index]
 
     def load_data(self):
-        # self.item_list = pd.read_table(self.path+'/item_list.txt', sep = '\t', header=0)
-        # self.user_list = pd.read_table(self.path+'/user_list.txt', sep = '\t', header=0)
         self.exist_users = []
         
         with open(self.path+'/train.txt') as f:
             for l in f.readlines():
-                if len(l) > 2:
-                    l = l.strip('\n').split(' ')
-                    items = [int(i) for i in l[1:]]
-                    uid = int(l[0])
-                    self.R[uid, items] = 1.0
-                    self.train_items[uid] = items
-                    self.exist_users.append(uid)
-                    self.n_item = max(self.n_item, max(items))
-                    self.n_user = max(self.n_user, uid)
-                    self.n_train += len(items)
+                l = l.strip('\n').split(' ')
+                items = [int(i) for i in l[1:]]
+                uid = int(l[0])
+                self.R[uid, items] = 1.0
+                self.train_items[uid] = items
+                self.exist_users.append(uid)
+                self.n_item = max(self.n_item, max(items))
+                self.n_user = max(self.n_user, uid)
+                self.n_train += len(items)
+
+        with open(self.path+'/test.txt') as f:
+            for l in f.readlines():
+                if len(l) == 0:
+                    break
+                l = l.strip('\n')
+                items = [int(i) for i in l.split(' ')]
+                self.n_item = max(self.n_item, max(items[1:]))
         self.n_user += 1
         self.n_item += 1
         if self.hgnr:
             self.S = sp.dok_matrix((self.n_user, self.n_user), dtype=np.float32)
-            with open(self.path+'/social_relations_modified.txt') as f:
+            with open(self.path+'/social_relations.txt') as f:
                 for l in f.readlines():
-                    l = l.strip('\n').split(' ')
-                    uid = int(l[0])
-                    for item in l[1:]:
-                        self.S[uid, int(item)] = self.S[int(item), uid] =1.0
+                    if len(l) == 0:
+                        break
+                    l = l.strip('\n')
+                    friends = [int(i) for i in l.split(' ')]
+                    uid, friend_ids = friends[0], friends[1:]
+                    for i in friend_ids:
+                        self.S[uid, i] = 1.0
 
             self.C = sp.dok_matrix((self.n_item, self.n_item), dtype=np.float32)
-            with open(self.path+'/review_index.txt') as f:
+            with open(self.path+'/review_idx_epi_g.txt') as f:
                 for l in f.readlines():
-                    l = l.strip('\n').split(',')
-                    iid = int(l[0])
-                    for item in l[1:]:
-                        self.C[iid, int(item)] = self.C[int(item), iid] = 1.0
-                    
+                    if len(l) == 0:
+                        break
+                    l = l.strip("\n")
+                    items = [int(i) for i in l.split(',')]
+                    iid, item_ids = items[0], items[1:]
+                    for i in item_ids:
+                        self.C[iid, i] = 1.0
+                
         
         self.R.resize((self.n_user, self.n_item))
         self.H = sp.dok_matrix((self.n_user+self.n_item, self.n_user+self.n_item), dtype = np.float32)
