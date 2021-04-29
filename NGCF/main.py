@@ -13,19 +13,19 @@ if __name__ == '__main__':
     os.environ["CUDA_VISIBLE_DEVICES"]="2"
     config = {
     'batch_size' : 1024,
-    'path' : './Epinion',
+    'path' : './Librarything',
     'neg_item' : 1,
     'n_embedding' : 64,
     'topk' : 10,
     'regularization' : 0.00001,
-    'lr' : 0.0001,
-    'hgnr': True,
+    'lr' : 0.001,
+    'hgnr': False,
     'epoch' : 3000,
-    'save_dir' : './NGCF/HGNR_Epinion_save_model.model',
+    'save_dir' : './NGCF/NGCF_Librarything_save_model.model',
     'dropout' : 0.3,
-    'use_pretrain':False,
+    'use_pretrain':True,
     'save_pretrain': True,
-    'test_epoch':1700 
+    'test_epoch':50
     }
     train_data = DataTrain(config)
     train_data.load_data()
@@ -76,5 +76,5 @@ if __name__ == '__main__':
                 max_val['ndcg_epoch'] = e
             if e % 10 == 0:
                 print("Epoch : {:d}, Hit@{:d} : {:4f},NDCG@{:d} : {:4f} MAX HIT :{:4f},MAX NDCG : {:4f}, Max at epoch : {:d} ,Time : {:4f}".format(e, config['topk'],hit, config['topk'], ndcg,max_val['hit'],max_val['ndcg'],max_val['h_epoch'],timer()-test_timer))
-            if config['save_pretrain']:
-                torch.save(model.state_dict(), config['save_dir'])
+        if config['save_pretrain']:
+            torch.save(model.state_dict(), config['save_dir'])

@@ -47,12 +47,13 @@ class DataTrain(Dataset):
         self.pos_item = []
         self.neg_item = []
         self.hgnr = config['hgnr']
+        self.sample_users = []
 
     def __len__(self):
-        return len(self.exist_users)
+        return self.n_train
 
     def __getitem__(self, index):
-        return self.exist_users[index], self.pos_item[index], self.neg_item[index]
+        return self.sample_users[index], self.pos_item[index], self.neg_item[index]
 
     def load_data(self):
         self.exist_users = []
@@ -128,7 +129,8 @@ class DataTrain(Dataset):
 
     def make_batch_sampling(self):
         pos_item, neg_item = [], []
-        for user in self.exist_users:
+        self.sample_users = np.random.choice(self.exist_users, self.n_train)
+        for user in self.sample_users:
             pos_item += [random.choice(self.train_items[user])]
             neg_item += self.neg_sampling(user)
         self.pos_item = np.asarray(pos_item)
