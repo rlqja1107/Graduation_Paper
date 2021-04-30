@@ -50,6 +50,8 @@ Time Sampling : 한 User에서 시간 순으로 0.8개를 Train, 나머지 0.2�
 |NGCF|0.012697|0.093611||0.0801|0.0977|  
 |HGNR|0.011586|0.084920||0.0863|0.1050|   
 
+---  
+
 <h3 style="color: red; font-weight: bold">Epinion - Time Sampling</h3>   
 
 
