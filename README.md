@@ -13,6 +13,8 @@ Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 �
 
 <h2 style="color: royalblue; font-weight: bold">데이터셋</h2>  
 
+  
+
 * Librarything  
 [Click](https://cseweb.ucsd.edu/~jmcauley/datasets.html#social_data)  
 * Epinion Review   
@@ -22,24 +24,51 @@ Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 �
 
 Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja1107/Graduation_Paper/blob/main/Yelp/README.md)를 참조  
 
-<h3 style="color: red; font-weight: bold">Epinion</h3>   
+<h2 style="color: royalblue; font-weight: bold">데이터 결과</h2>
+
+Random Sampling : 한 User가 본 Item을 무작위로 0.8개 뽑아서 Train, 나머지 0.2개를 Test Set으로 구성  
+Time Sampling : 한 User에서 시간 순으로 0.8개를 Train, 나머지 0.2개를 Test로 구성(가장 최근의 0.2개가 Test)  
+
+> Revised Code Version  
+
+<h3 style="color: red; font-weight: bold">Epinion - Random Sampling</h3>   
+
 
 |Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
 |:---:|:---:|:---:|:---:|:---:|:---:|      
 |BPR|0.00046|0.001234||0.00606|0.00672|    
-|NeuMF||||0.00739|0.00841|  
-|NGCF|0.001058|0.009185||0.00850|0.00955|   
+|NGCF|0.001075|0.009185||0.00850|0.00955|   
 |HGNR|0.001225|0.011073||0.00945|0.01075|   
 
 * NGCF: Learing Rate : 0.0001, Regularization : 0.00001, Epoch : 1500(360에서 최대)
 
-<h3 style="color: red; font-weight: bold">Librarything</h3>   
+<h3 style="color: red; font-weight: bold">Librarything - Random Sampling</h3>   
 
 |Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
 |:---:|:---:|:---:|:---:|:---:|:---:|      
 |BPR||||||    
-|NGCF|0.012698|0.09416||0.0801|0.0977|  
-|HGNR||||||   
+|NGCF|0.012697|0.093611||0.0801|0.0977|  
+|HGNR|0.011586|0.084920||0.0863|0.1050|   
+
+<h3 style="color: red; font-weight: bold">Epinion - Time Sampling</h3>   
+
+
+|Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
+|:---:|:---:|:---:|:---:|:---:|:---:|      
+|BPR|0.00046|0.001234||0.00606|0.00672|    
+|NGCF|0.001075|0.009185||0.00850|0.00955|   
+|HGNR|0.001225|0.011073||0.00945|0.01075|   
+
+* NGCF: Learing Rate : 0.0001, Regularization : 0.00001, Epoch : 1500(360에서 최대)
+
+<h3 style="color: red; font-weight: bold">Librarything - Time Sampling</h3>   
+
+|Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
+|:---:|:---:|:---:|:---:|:---:|:---:|      
+|BPR||||||    
+|NGCF|0.012697|0.093611||0.0801|0.0977|  
+|HGNR|0.011586|0.084920||0.0863|0.1050|   
+
 
 > NDCG를 구하는 방법의 차이 
 
