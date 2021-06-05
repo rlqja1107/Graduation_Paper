@@ -26,42 +26,25 @@ Train과 Test Set을 구성한 방법에서는 [여기](https://github.com/rlqja
 
 <h2 style="color: royalblue; font-weight: bold">데이터 결과</h2>
 
-Random Sampling : 한 User가 본 Item을 무작위로 0.8개 뽑아서 Train, 나머지 0.2개를 Test Set으로 구성  
-Time Sampling : 한 User에서 시간 순으로 0.8개를 Train, 나머지 0.2개를 Test로 구성(가장 최근의 0.2개가 Test)  
-
-> Revised Code Version  
-
-<h3 style="color: red; font-weight: bold">Epinion - Random Sampling</h3>   
-
-
-|Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
-|:---:|:---:|:---:|:---:|:---:|:---:|      
-|BPR|0.00046|0.001234||0.00606|0.00672|    
-|NGCF|0.001075|0.009185||0.00850|0.00955|   
-|HGNR|0.001225|0.011073||0.00945|0.01075|   
-
-* NGCF: Learing Rate : 0.0001, Regularization : 0.00001, Epoch : 1500(360에서 최대)
-
-<h3 style="color: red; font-weight: bold">Librarything - Random Sampling</h3>   
-
-|Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
-|:---:|:---:|:---:|:---:|:---:|:---:|      
-|BPR||||||    
-|NGCF|0.012697|0.093611||0.0801|0.0977|  
-|HGNR|0.011586|0.084920||0.0863|0.1050|   
+Time Sampling : Train과 Test를 나누는 기준을 한 TimeStamp를 기준으로 나눈다. 한 TimeStamp를 기준으로 이전 시점은 Train, 이후 시점은 Test로 이용하면서 Train 0.8, Test 0.2를 Epinion82라고 하고, Train 0.9, Test 0.1를 Epinion91이라고 한다.  
 
 ---  
 
-<h3 style="color: red; font-weight: bold">Epinion - Time Sampling</h3>   
+<h3 style="color: red; font-weight: bold">Epinion82</h3>   
 
+|Model|NDCG(구현)|HR(구현)|   
+|:---:|:---:|:---:|   
+|BPR|0.00094|0.000956|   
+|NGCF|0.000389|0.004399|     
+|HGNR|0.000505|0.004973|   
 
-|Model|NDCG(구현)|HR(구현)||NCDG(논문)|HR(논문)|    
-|:---:|:---:|:---:|:---:|:---:|:---:|      
-|BPR|0.00046|0.001234||0.00606|0.00672|    
-|NGCF|0.001096|0.010165||0.00850|0.00955|   
-|HGNR|0.000952|0.008350||0.00945|0.01075|   
+<h3 style="color: red; font-weight: bold">Epinion91</h3>   
 
-* NGCF: Learing Rate : 0.0001, Regularization : 0.00001, Epoch : 1500(360에서 최대)
+|Model|NDCG(구현)|HR(구현)|  
+|:---:|:---:|:---:|    
+|BPR|0.000219|0.001513|     
+|NGCF|0.000639|0.006305|    
+|HGNR|0.000579|0.005801|     
 
 <h3 style="color: red; font-weight: bold">Librarything - Time Sampling</h3>   
 
