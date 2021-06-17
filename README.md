@@ -6,14 +6,18 @@ Recommendation System에서 근본적인 문제 중 하나는 **Cold Start** Pro
 
 Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 완화하고자 한다.  
 
+***  
+
+* WSNG(Weight Sequence Learning For Neural Graph Collaborative Filtering)  
+
+기존의 NGCF는 Static Graph로 시간의 정보를 반영하고 있지 않다. 시간의 정보를 반영하기 위해 EvolveGCN의 Idea를 활용하여 Dynamic Graph Representation을 하고자 한다. 졸업논문의 제목으로 **WSNG**으로 한다. 자세한 코드는 **WSNG** 디렉토리를 통해 확인할 수 있다.  
+
 <h2 style="color: royalblue; font-weight: bold">Target Paper</h2>  
 
 * [A Heterogeneous Graph Neural Model for Cold-start Recommendation](https://dl.acm.org/doi/abs/10.1145/3397271.3401252)  
 * [Neural Graph Collaborative Filtering](https://arxiv.org/pdf/1905.08108.pdf)  
 
 <h2 style="color: royalblue; font-weight: bold">데이터셋</h2>  
-
-  
 
 * Librarything  
 [Click](https://cseweb.ucsd.edu/~jmcauley/datasets.html#social_data)  

@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.append(os.getcwd()+'/NGCF_NEW')
+sys.path.append(os.getcwd()+'/WSNG')
 from dataset import DataTest, DataTrain
 from model import NGCF, LSTM
 from torch.utils.data import DataLoader
