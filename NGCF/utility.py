@@ -25,10 +25,11 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     return torch.sparse.FloatTensor(indices, values, shape)
 
 
+
 def test(model, train_module, test_dataloader):
     model.eval()
     test_dataset = test_dataloader.dataset
-
+    topk_result = dict()
     with torch.no_grad():
         user_embedding, item_embedding = model(train_module.L_c)
     total_hit_rate = []
@@ -49,8 +50,11 @@ def test(model, train_module, test_dataloader):
             hit, ndcg = test_one_user(user.item(), topk_item[i], test_dataset)
             total_hit_rate.append(hit)
             total_ndcg.append(ndcg)
+            
+        temp_dict = dict(zip(user_batch.detach().cpu().numpy(), topk_item))
+        topk_result.update(temp_dict)
 
-    return np.sum(total_hit_rate)/model.n_user, np.sum(total_ndcg)/model.n_user
+    return np.sum(total_hit_rate)/test_dataset.test_user, np.sum(total_ndcg)/test_dataset.test_user, topk_result
 
 
 

@@ -8,12 +8,11 @@ from torch.utils.data import Dataset
 import torch
 
 class DataTest(Dataset):
-
-    def __init__(self, config):
+    def __init__(self, path):
         self.n_test = 0
         self.test_items = {}
-        self.path = config['path']
-        
+        self.path = path
+        self.test_user = 0.0
     def __len__(self):
         return len(self.test_items.keys())
 
@@ -27,14 +26,15 @@ class DataTest(Dataset):
                     break
                 l = l.strip('\n')
                 items = [int(i) for i in l.split(' ')]
+                self.test_user += 1
                 self.n_test += len(items[1:])
                 self.test_items[items[0]] = items[1:]
         self.test_users = torch.LongTensor(list(self.test_items.keys()))
 
 
 class DataTrain(Dataset):
-    def __init__(self, config):
-        self.path = config['path']
+    def __init__(self, config,path):
+        self.path = path
         self.batch_size = config['batch_size']
         self.topk = config['topk']
         self.n_user = 0
@@ -69,7 +69,7 @@ class DataTrain(Dataset):
                 self.n_item = max(self.n_item, max(items))
                 self.n_user = max(self.n_user, uid)
                 self.n_train += len(items)
-
+                
         with open(self.path+'/test.txt') as f:
             for l in f.readlines():
                 if len(l) == 0:
@@ -77,8 +77,10 @@ class DataTrain(Dataset):
                 l = l.strip('\n')
                 items = [int(i) for i in l.split(' ')]
                 self.n_item = max(self.n_item, max(items[1:]))
+
         self.n_user += 1
         self.n_item += 1
+
         if self.hgnr:
             self.S = sp.dok_matrix((self.n_user, self.n_user), dtype=np.float32)
             with open(self.path+'/social_relations.txt') as f:
@@ -88,19 +90,19 @@ class DataTrain(Dataset):
                     l = l.strip('\n')
                     friends = [int(i) for i in l.split(' ')]
                     uid, friend_ids = friends[0], friends[1:]
-                    for i in friend_ids:
-                        self.S[uid, i] = 1.0
+                    self.S[uid, friend_ids] = 1.0
+           
 
             self.C = sp.dok_matrix((self.n_item, self.n_item), dtype=np.float32)
-            with open(self.path+'/review_idx_epi_g.txt') as f:
+            with open(self.path+'/c_matrix.txt') as f:
                 for l in f.readlines():
                     if len(l) == 0:
                         break
                     l = l.strip("\n")
                     items = [int(i) for i in l.split(',')]
                     iid, item_ids = items[0], items[1:]
-                    for i in item_ids:
-                        self.C[iid, i] = 1.0
+                    self.C[iid, item_ids] = 1.0
+                  
                 
         
         self.R.resize((self.n_user, self.n_item))

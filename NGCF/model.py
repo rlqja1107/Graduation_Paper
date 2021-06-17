@@ -37,4 +37,3 @@ class NGCF(nn.Module):
         all_embedding = torch.cat(all_embedding, dim=1)
         user_embedding, item_embedding = torch.split(all_embedding, [self.n_user, self.n_item], dim=0)
         return user_embedding, item_embedding
-            
