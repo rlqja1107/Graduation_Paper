@@ -2,20 +2,21 @@
 
 <h2 style="color: royalblue; font-weight: bold">주제</h2>  
 
-Recommendation System에서 근본적인 문제 중 하나는 **Cold Start** Problem이다. Cold Start는 새로운 User 또는 Item이 추천시스템에 도입될 때 기본적인 Profile과 Interaction정보가 부족하여 새로운 User에게 추천을 하거나 새로운 Item을 추천하기가 어렵다.  
+* Clustering
 
-Cold Start를 추천시스템과 Graph를 접목시켜 어느정도 문제를 완화하고자 한다.  
+NGCF에서 User-User, Item-Item의 message passing을 다루기 위해서 HGNR Methodology가 나왔다. 하지만, HGNR에서는 User-User를 Friend에서 BPR를 이용해서 Top 20의 User끼리 이어주었다. 여기서 새롭게 User-User를 연결시켜주기 위해 agglomerative hierarchical clustering을 이용하여 Cluster에 있는 User끼리 연결시켜주었다. Item-Item에서는 HGNR에서는 Review를 S-BERT를 이용해서 Top 20의 Similarity가 높은 Item끼리 연결시켜주었다. 하지만, Item의 이름을 S-BERT로 Word Embedding을 하여 Top 20의 Item을 연결시켜 Message Passing을 시켜주었다.  
 
 ***  
 
 * WSNG(Weight Sequence Learning For Neural Graph Collaborative Filtering)  
 
-기존의 NGCF는 Static Graph로 시간의 정보를 반영하고 있지 않다. 시간의 정보를 반영하기 위해 EvolveGCN의 Idea를 활용하여 Dynamic Graph Representation을 하고자 한다. 졸업논문의 제목으로 **WSNG**으로 한다. 자세한 코드는 **WSNG** 디렉토리를 통해 확인할 수 있다.  
+기존의 NGCF는 Static Graph로 시간의 정보를 반영하고 있지 않다. 시간의 정보를 반영하기 위해 EvolveGCN의 Idea를 활용하여 Dynamic Graph Representation을 하고자 한다. 새로운 모델의 이름을 **WSNG**으로 한다. 자세한 코드는 **WSNG** 디렉토리를 통해 확인할 수 있다.  
 
 <h2 style="color: royalblue; font-weight: bold">Target Paper</h2>  
 
 * [A Heterogeneous Graph Neural Model for Cold-start Recommendation](https://dl.acm.org/doi/abs/10.1145/3397271.3401252)  
 * [Neural Graph Collaborative Filtering](https://arxiv.org/pdf/1905.08108.pdf)  
+* [EvolveGCN: Evolving Graph Convolutional Networks for Dynamic Graphs](https://arxiv.org/abs/1902.10191)  
 
 <h2 style="color: royalblue; font-weight: bold">데이터셋</h2>  
 
@@ -40,7 +41,9 @@ Time Sampling : Train과 Test를 나누는 기준을 한 TimeStamp를 기준으�
 |:---:|:---:|:---:|   
 |BPR|0.00094|0.000956|   
 |NGCF|0.000389|0.004399|     
-|HGNR|0.000505|0.004973|   
+|HGNR|0.000505|0.004973|    
+|HGNR_cluster|0.000329|0.005164|   
+|WSNG|0.000666|0.006121|  
 
 <h3 style="color: red; font-weight: bold">Epinion91</h3>   
 
@@ -49,6 +52,8 @@ Time Sampling : Train과 Test를 나누는 기준을 한 TimeStamp를 기준으�
 |BPR|0.000219|0.001513|     
 |NGCF|0.000639|0.006305|    
 |HGNR|0.000579|0.005801|     
+|HGNR_cluster|0.000426|0.004035|    
+|WSNG|0.000888|0.007062|  
 
 <h3 style="color: red; font-weight: bold">Librarything - Time Sampling</h3>   
 
@@ -66,5 +71,4 @@ Target 논문에서는 NDCG에서 IDCG를 구할 때, hit list가 [0,1,0,0,....1
 ### Dataset의 기본적인 설명보기   
 [Click](https://github.com/rlqja1107/Graduation_Paper/wiki/Data-Explanation)  
 
-<h2 style="color: royalblue; font-weight: bold">이전모델의 성능비교</h2>  
 
